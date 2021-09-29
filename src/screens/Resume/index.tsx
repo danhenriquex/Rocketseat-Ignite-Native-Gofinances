@@ -22,6 +22,7 @@ import {
 } from "./styles";
 import { categories } from "../../utils/categories";
 import { RFValue } from "react-native-responsive-fontsize";
+import { useAuth } from "../../hooks/auth";
 
 interface TransactionData {
   type: "up" | "down";
@@ -47,6 +48,8 @@ export function Resume() {
     []
   );
 
+  const { user } = useAuth();
+
   const theme = useTheme();
 
   function handleDateChange(action: "next" | "prev") {
@@ -59,7 +62,7 @@ export function Resume() {
 
   async function loadData() {
     setIsLoading(true);
-    const dataKey = "@gofinances:transactions";
+    const dataKey = `@gofinances:transactions_:${user.id}`;
 
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted: TransactionData[] = response

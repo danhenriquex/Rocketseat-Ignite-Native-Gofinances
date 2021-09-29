@@ -26,6 +26,7 @@ import {
   TransactionCardProps,
 } from "../../components/TransactionCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "../../hooks/auth";
 
 export interface DataListProps extends TransactionCardProps {
   id: string;
@@ -49,6 +50,7 @@ export function Dashboard() {
     {} as HighlightCard
   );
 
+  const { user, signOut } = useAuth();
   const theme = useTheme();
 
   function getLastTransactionDate(
@@ -71,7 +73,7 @@ export function Dashboard() {
   }
 
   async function loadTransactions() {
-    const dataKey = "@gofinances:transactions";
+    const dataKey = `@gofinances:transactions_:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const transactions = response ? JSON.parse(response) : [];
 
@@ -130,21 +132,30 @@ export function Dashboard() {
           style: "currency",
           currency: "BRL",
         }),
-        lastTransaction: `Última entrada dia ${lastTransactionsEntriesDate}`,
+        lastTransaction:
+          lastTransactionsEntriesDate !== "NaN de Invalid Date"
+            ? `Última entrada dia ${lastTransactionsEntriesDate}`
+            : "Sem entradas nos últimos dias",
       },
       expensive: {
         amount: expensiveTotal.toLocaleString("pt-BR", {
           style: "currency",
           currency: "BRL",
         }),
-        lastTransaction: `Última saída dia ${lastTransactionsEnpensiveDate}`,
+        lastTransaction:
+          lastTransactionsEnpensiveDate !== "NaN de Invalid Date"
+            ? `Última saída dia ${lastTransactionsEnpensiveDate}`
+            : "Sem saídas nos últimos dias",
       },
       total: {
         amount: total.toLocaleString("pt-BR", {
           style: "currency",
           currency: "BRL",
         }),
-        lastTransaction: lastTransactionsEnpensiveDate,
+        lastTransaction:
+          lastTransactionsEnpensiveDate !== "NaN de Invalid Date"
+            ? lastTransactionsEnpensiveDate
+            : "Sem total",
       },
     });
 
@@ -163,10 +174,6 @@ export function Dashboard() {
     }, [])
   );
 
-  // useEffect(() => {
-  //   AsyncStorage.clear();
-  // });
-
   return (
     <Container>
       {isLoading ? (
@@ -178,15 +185,13 @@ export function Dashboard() {
           <Header>
             <UserWrapper>
               <UserInfo>
-                <Photo
-                  source={{ uri: "https://github.com/danhenriquex.png" }}
-                />
+                <Photo source={{ uri: user.photo }} />
                 <User>
                   <UserGreeting>Olá,</UserGreeting>
-                  <UserName>Danilo</UserName>
+                  <UserName>{user.name}</UserName>
                 </User>
               </UserInfo>
-              <LogoutButton onPress={() => {}}>
+              <LogoutButton onPress={signOut}>
                 <Icon name="power" />
               </LogoutButton>
             </UserWrapper>
