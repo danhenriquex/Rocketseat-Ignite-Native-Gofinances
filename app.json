@@ -1,12 +1,26 @@
 {
   "expo": {
-    "name": "gofinances",
-    "slug": "gofinances",
+    "name": "GoFinances",
+    "slug": "GoFinances",
     "scheme": "gofinances",
+    "icon": "./resources/icon.png",
     "version": "1.0.0",
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./resources/adaptive-icon.png",
+        "backgroundColor": "#fff"
+      }
+    },
+    "splash": {
+      "image": "./resources/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#5636D3"
+    },
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "description": "Aplicativo feito durante o ignite da rocketseat",
+    "githubUrl": "https://github.com/danhenriquex/Rocketseat-Ignite-Native-Gofinances"
   },
   "name": "gofinances"
 }
