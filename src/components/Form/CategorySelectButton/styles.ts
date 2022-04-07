@@ -5,7 +5,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { RectButton, BorderlessButton } from "react-native-gesture-handler";
 
 export const Container = styled(RectButton).attrs({
-  activeOpacity: 0.7,
+  // activeOpacity: 0.7,
 })`
   background-color: ${({ theme }) => theme.colors.shape};
 

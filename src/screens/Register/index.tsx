@@ -34,13 +34,15 @@ interface FormData {
   amount: string;
 }
 
-const schema = Yup.object().shape({
-  name: Yup.string().required("Nome é obrigatório"),
-  amount: Yup.number()
-    .typeError("Informe um valor numérico")
-    .positive("O valor não pode ser negativo")
-    .required("Preço é obrigatório"),
-}).required();
+const schema = Yup.object()
+  .shape({
+    name: Yup.string().required("Nome é obrigatório"),
+    amount: Yup.number()
+      .typeError("Informe um valor numérico")
+      .positive("O valor não pode ser negativo")
+      .required("Preço é obrigatório"),
+  })
+  .required();
 
 export function Register() {
   const [transactionType, setTransactionType] = useState("");
@@ -156,6 +158,7 @@ export function Register() {
             </TransactionsType>
 
             <CategorySelectButton
+              testID="button-category"
               title={category.name}
               onPress={handleOpenModalSelectCategory}
             />
@@ -163,7 +166,11 @@ export function Register() {
           <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
         </Form>
 
-        <Modal visible={categoryModalOpen} animationType="slide">
+        <Modal
+          testID="modal-category"
+          visible={categoryModalOpen}
+          animationType="slide"
+        >
           <CategorySelect
             category={category}
             setCategory={setCategory}
